@@ -1,17 +1,31 @@
-import { FaLocationArrow } from "react-icons/fa6";
 
-import MagicButton from "./MagicButton";
 import { Spotlight } from "./ui/Spotlight";
 import { TextGenerateEffect } from "./ui/TextGenerateEffect";
+import { Meteors } from "./ui/meteors";
+import Image from "next/image";
+import { GlareCard } from "./ui/glare-card";
+import { useEffect, useState } from "react";
+import { VanishingText } from "./ui/TextVanish";
+
+const taglines = [
+    "Bridging front-end finesse with back-end prowess",
+    "Architecting digital solutions from database to interface",
+    "Turning complex problems into elegant full-stack solutions",
+    "Seamlessly connecting users to data through innovative code",
+    "Transforming ideas into full-fledged digital realities"
+];
 
 const Hero = () => {
+  
   return (
     <div className="pb-20 pt-36">
+      
       {/**
        *  UI: Spotlights
        *  Link: https://ui.aceternity.com/components/spotlight
        */}
       <div>
+        <Meteors number={20} className="absolute z-50"/>  
         <Spotlight
           className="-top-40 -left-10 md:-left-32 md:-top-20 h-screen"
           fill="white"
@@ -40,34 +54,27 @@ const Hero = () => {
         />
       </div>
 
-      <div className="flex justify-center relative my-20 z-10">
-        <div className="max-w-[89vw] md:max-w-2xl lg:max-w-[60vw] flex flex-col items-center justify-center">
-          <p className="uppercase tracking-widest text-xs text-center text-blue-100 max-w-80">
-            Dynamic Web Magic with Next.js
-          </p>
-
-          {/**
-           *  Link: https://ui.aceternity.com/components/text-generate-effect
-           *
-           *  change md:text-6xl, add more responsive code
-           */}
+      <div className="flex justify-around relative my-20 z-10">
+        <div className="text-start max-w-[50vw] flex flex-col items-start justify-start">
+          
           <TextGenerateEffect
-            words="Transforming Concepts into Seamless User Experiences"
-            className="text-center text-[40px] md:text-5xl lg:text-6xl"
+            words="Hi! I'm Manish Rana, Full Stack Developer"
+            className="text-start text-[20px] md:text-3xl lg:text-4xl"
           />
-
-          <p className="text-center md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl">
-            Hi! I&apos;m Manish, a Sr. Fullstack Developer based in Noida, India.
+         
+          <p className="text-start md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl">
+           Transforming Concepts into seamless user experiences
           </p>
+          <p className="text-start md:tracking-wider mb-4 text-sm md:text-md lg:text-xl">I am a passionate Software Engineer, specialised in front-end development using React, NextJs, NodeJs, TypeScript and more.
+            <br />
+          
+          </p>
+          <VanishingText className="text-start md:tracking-wider mb-4 text-sm md:text-md lg:text-xl" textList={taglines} />
 
-          <a href="#about">
-            <MagicButton
-              title="Show my work"
-              icon={<FaLocationArrow />}
-              position="right"
-            />
-          </a>
         </div>
+        <GlareCard className="flex flex-col items-center justify-center">
+          <Image src={'/photo-large.png'} className="hover:grayscale p-5 rounded-2xl" height={800} width={600} alt="photo" />
+        </GlareCard>
       </div>
     </div>
   );

@@ -6,9 +6,11 @@ import { cn } from "@/lib/utils";
 export const TextGenerateEffect = ({
   words,
   className,
+  colorStartIndex = 3
 }: {
   words: string;
   className?: string;
+  colorStartIndex?:number;
 }) => {
   const [scope, animate] = useAnimate();
   let wordsArray = words.split(" ");
@@ -22,7 +24,8 @@ export const TextGenerateEffect = ({
       {
         duration: 2,
         delay: stagger(0.2),
-      }
+      },
+      
     );
   }, [scope.current]);
 
@@ -34,7 +37,7 @@ export const TextGenerateEffect = ({
             <motion.span
               key={word + idx}
               // change here if idx is greater than 3, change the text color to #CBACF9
-              className={` ${idx > 3 ? "text-purple" : "dark:text-white text-black"
+              className={` ${idx > colorStartIndex ? "text-purple" : "dark:text-white text-black"
                 } opacity-0`}
             >
               {word}{" "}
@@ -48,7 +51,7 @@ export const TextGenerateEffect = ({
   return (
     <div className={cn("font-bold", className)}>
       {/* mt-4 to my-4 */}
-      <div className="my-4">
+      <div className="my-4 mr-20">
         {/* remove  text-2xl from the original */}
         <div className=" dark:text-white text-black leading-snug tracking-wide">
           {renderWords()}
