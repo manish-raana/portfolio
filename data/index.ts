@@ -104,37 +104,17 @@ export const projects = [
   },
 ];
 
-export const testimonials = [
-  {
-    quote:
-      "Collaborating with Adrian was an absolute pleasure. His professionalism, promptness, and dedication to delivering exceptional results were evident throughout our project. Adrian's enthusiasm for every facet of development truly stands out. If you're seeking to elevate your website and elevate your brand, Adrian is the ideal partner.",
-    name: "Michael Johnson",
-    title: "Director of AlphaStream Technologies",
-  },
-  {
-    quote:
-      "Collaborating with Adrian was an absolute pleasure. His professionalism, promptness, and dedication to delivering exceptional results were evident throughout our project. Adrian's enthusiasm for every facet of development truly stands out. If you're seeking to elevate your website and elevate your brand, Adrian is the ideal partner.",
-    name: "Michael Johnson",
-    title: "Director of AlphaStream Technologies",
-  },
-  {
-    quote:
-      "Collaborating with Adrian was an absolute pleasure. His professionalism, promptness, and dedication to delivering exceptional results were evident throughout our project. Adrian's enthusiasm for every facet of development truly stands out. If you're seeking to elevate your website and elevate your brand, Adrian is the ideal partner.",
-    name: "Michael Johnson",
-    title: "Director of AlphaStream Technologies",
-  },
-  {
-    quote:
-      "Collaborating with Adrian was an absolute pleasure. His professionalism, promptness, and dedication to delivering exceptional results were evident throughout our project. Adrian's enthusiasm for every facet of development truly stands out. If you're seeking to elevate your website and elevate your brand, Adrian is the ideal partner.",
-    name: "Michael Johnson",
-    title: "Director of AlphaStream Technologies",
-  },
-  {
-    quote:
-      "Collaborating with Adrian was an absolute pleasure. His professionalism, promptness, and dedication to delivering exceptional results were evident throughout our project. Adrian's enthusiasm for every facet of development truly stands out. If you're seeking to elevate your website and elevate your brand, Adrian is the ideal partner.",
-    name: "Michael Johnson",
-    title: "Director of AlphaStream Technologies",
-  },
+export const techIcons = [
+  "/tech-icons/angular.svg",
+  "/tech-icons/clickup.svg",
+  "/tech-icons/tailwind.svg",
+  "/tech-icons/aws.png",
+  "/tech-icons/nextjs.svg",
+  "/tech-icons/node.png",
+  "/tech-icons/react.png",
+  "/tech-icons/ts.png",
+  "/tech-icons/vite.png",
+  "/tech-icons/web3.png",
 ];
 
 export const companies = [
@@ -173,29 +153,29 @@ export const companies = [
 export const workExperience = [
   {
     id: 1,
-    title: "Frontend Engineer Intern",
-    desc: "Assisted in the development of a web-based platform using React.js, enhancing interactivity.",
+    title: "QA Engineer Title: Selenium Testing Expert",
+    desc: "At IVP, demonstrated proficiency in both Selenium Automation Testing and Manual Testing methodologies. Extensively used Selenium Web-Driver API for efficient and scalable automation testing.",
     className: "md:col-span-2",
     thumbnail: "/exp1.svg",
   },
   {
     id: 2,
-    title: "Mobile App Dev - JSM Tech",
-    desc: "Designed and developed mobile app for both iOS & Android platforms using React Native.",
+    title: "Versatile Tech Innovator",
+    desc: "Across roles, showcased expertise in frontend (JS, React, Next.js), backend (Node.js, Express), DevOps (Docker, AWS), and databases (MySQL, MongoDB). Developed projects ranging from AI image generation to gym management systems.",
     className: "md:col-span-2", // change to md:col-span-2
     thumbnail: "/exp2.svg",
   },
   {
     id: 3,
-    title: "Freelance App Dev Project",
-    desc: "Led the dev of a mobile app for a client, from initial concept to deployment on app stores.",
+    title: "Bitcci Ecosystem Developer",
+    desc: "At bitcci ag, crafted interfaces using React and Angular for various applications. Engaged in both frontend and REST API development. Integrated Web3 wallets and smart contracts, contributing to proof-of-concept planning for innovative initiatives.",
     className: "md:col-span-2", // change to md:col-span-2
     thumbnail: "/exp3.svg",
   },
   {
     id: 4,
-    title: "Lead Frontend Developer",
-    desc: "Developed and maintained user-facing features using modern frontend technologies.",
+    title: "Blockchain Integration Specialist",
+    desc: "At Blockpeer Finance, developed dynamic interfaces using ReactJS and Next.js. Integrated Web3 wallets and smart contracts for blockchain interactions. Created systems for crypto transfers and verifiable blockchain documents.",
     className: "md:col-span-2",
     thumbnail: "/exp4.svg",
   },
@@ -205,13 +185,16 @@ export const socialMedia = [
   {
     id: 1,
     img: "/git.svg",
+    link:'https://github.com/manish-raana'
   },
   {
     id: 2,
     img: "/twit.svg",
+    link:'https://twitter.com/ManishRaanaa'
   },
   {
     id: 3,
     img: "/link.svg",
+    link:'https://www.linkedin.com/in/manishraana/'
   },
 ];

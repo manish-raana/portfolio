@@ -4,10 +4,12 @@ import { TextGenerateEffect } from "./ui/TextGenerateEffect";
 import { Meteors } from "./ui/meteors";
 import Image from "next/image";
 import { GlareCard } from "./ui/glare-card";
-import { useEffect, useState } from "react";
 import { VanishingText } from "./ui/TextVanish";
+import MagicButton from "./MagicButton";
+import { FaLinkedin, FaTwitter } from "react-icons/fa6";
 
 const taglines = [
+    "Transforming Concepts into seamless user experiences",
     "Bridging front-end finesse with back-end prowess",
     "Architecting digital solutions from database to interface",
     "Turning complex problems into elegant full-stack solutions",
@@ -62,18 +64,37 @@ const Hero = () => {
             className="text-start text-[20px] md:text-3xl lg:text-4xl"
           />
          
-          <p className="text-start md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl">
+          {/* <p className="text-start md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl">
            Transforming Concepts into seamless user experiences
-          </p>
-          <p className="text-start md:tracking-wider mb-4 text-sm md:text-md lg:text-xl">I am a passionate Software Engineer, specialised in front-end development using React, NextJs, NodeJs, TypeScript and more.
+          </p> */}
+          <p className="text-start md:tracking-wider mb-4 text-sm md:text-md lg:text-xl my-5">I am a passionate Software Engineer, specialised in front-end development using React, NextJs, NodeJs, TypeScript and more.
             <br />
           
           </p>
-          <VanishingText className="text-start md:tracking-wider mb-4 text-sm md:text-md lg:text-xl" textList={taglines} />
-
+          <VanishingText className=" text-start md:tracking-wider mt-5 text-sm md:text-md lg:text-xl" textList={taglines} />
+            <div className="flex items-center gap-4">
+              <a href="https://www.linkedin.com/in/manishraana/" target="_blank">
+                <MagicButton
+                  title="LinkedIn"
+                  otherClasses="hover:bg-blue-500"
+                  icon={<FaLinkedin />}
+                  position="right"
+                />
+              </a>
+              <a href="https://twitter.com/ManishRaanaa" target="_blank">
+                <MagicButton
+                  title="Twitter"
+                  otherClasses="hover:bg-blue-500"
+                  icon={<FaTwitter />}
+                  position="right"
+                />
+              </a>
+            </div>
+            
         </div>
+
         <GlareCard className="flex flex-col items-center justify-center">
-          <Image src={'/photo-large.png'} className="hover:grayscale p-5 rounded-2xl" height={800} width={600} alt="photo" />
+              <Image src={'/photo-large.png'} className="hover:grayscale p-5 rounded-2xl" height={800} width={600} alt="photo" />
         </GlareCard>
       </div>
     </div>

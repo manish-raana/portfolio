@@ -16,7 +16,6 @@ export function VanishingText({
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const startAnimation = () => {
     intervalRef.current = setInterval(() => {
-      vanishAndSubmit();
       setCurrentText((prev) => (prev + 1) % textList.length);
     }, 3000);
   };
