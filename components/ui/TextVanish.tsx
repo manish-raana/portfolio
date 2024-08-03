@@ -165,12 +165,12 @@ export function VanishingText({
     <>
       <canvas
         className={cn(
-          "absolute pointer-events-none  text-base transform scale-50 top-[20%] left-2 sm:left-8 origin-top-left filter invert dark:invert-0 pr-20",
+          "absolute pointer-events-none  text-base transform scale-50 top-[20%] left-2 sm:left-0 origin-top-left filter invert dark:invert-0 pr-20",
           !animating ? "opacity-0" : "opacity-100"
         )}
         ref={canvasRef}
       />
-      <div className="flex items-center rounded-full pointer-events-none">
+      <div className="flex items-start md:items-center rounded-full pointer-events-none">
         <AnimatePresence mode="wait">
           {!value && (
             <motion.p

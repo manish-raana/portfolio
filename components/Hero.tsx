@@ -9,12 +9,12 @@ import MagicButton from "./MagicButton";
 import { FaLinkedin, FaTwitter } from "react-icons/fa6";
 
 const taglines = [
-    "Transforming Concepts into seamless user experiences",
+    "Transforming Concepts into seamless user experiences ",
     "Bridging front-end finesse with back-end prowess",
     "Architecting digital solutions from database to interface",
     "Turning complex problems into elegant full-stack solutions",
     "Seamlessly connecting users to data through innovative code",
-    "Transforming ideas into full-fledged digital realities"
+    "Transforming ideas into full-fledged digital realities "
 ];
 
 const Hero = () => {
@@ -56,8 +56,11 @@ const Hero = () => {
         />
       </div>
 
-      <div className="flex justify-around relative my-20 z-10">
-        <div className="text-start max-w-[50vw] flex flex-col items-start justify-start">
+      <div className="flex flex-col md:flex-row justify-center items-center md:justify-between relative md:my-20 z-10">
+        <GlareCard className="flex flex-col items-center justify-center w-full">
+            <Image src={'/photo-large.png'} className="hover:grayscale p-5 rounded-2xl w-full" height={800} width={600} alt="photo" />
+        </GlareCard>
+        <div className="text-center md:text-start md:max-w-[50vw] flex flex-col items-center justify-center md:items-start md:justify-start">
           
           <TextGenerateEffect
             words="Hi! I'm Manish Rana, Full Stack Developer"
@@ -69,10 +72,9 @@ const Hero = () => {
           </p> */}
           <p className="text-start md:tracking-wider mb-4 text-sm md:text-md lg:text-xl my-5">I am a passionate Software Engineer, specialised in front-end development using React, NextJs, NodeJs, TypeScript and more.
             <br />
-          
           </p>
-          <VanishingText className=" text-start md:tracking-wider mt-5 text-sm md:text-md lg:text-xl" textList={taglines} />
-            <div className="flex items-center gap-4">
+          <VanishingText className="text-start h-14 md:tracking-wider mt-5 text-sm md:text-md lg:text-xl" textList={taglines} />
+          <div className="flex items-center gap-6 mt-5">
               <a href="https://www.linkedin.com/in/manishraana/" target="_blank">
                 <MagicButton
                   title="LinkedIn"
@@ -92,10 +94,6 @@ const Hero = () => {
             </div>
             
         </div>
-
-        <GlareCard className="flex flex-col items-center justify-center">
-              <Image src={'/photo-large.png'} className="hover:grayscale p-5 rounded-2xl" height={800} width={600} alt="photo" />
-        </GlareCard>
       </div>
     </div>
   );
