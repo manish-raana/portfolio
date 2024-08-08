@@ -60,7 +60,7 @@ const Hero = () => {
         <GlareCard className="flex flex-col items-center justify-center w-full">
             <Image src={'/photo-large.png'} className="hover:grayscale p-5 rounded-2xl w-full" height={800} width={600} alt="photo" />
         </GlareCard>
-        <div className="text-center md:text-start md:max-w-[50vw] flex flex-col items-center justify-center md:items-start md:justify-start">
+        <div className="text-center md:text-start md:max-w-[50vw] lg:max-w-[40vw] flex flex-col items-center justify-center md:items-start md:justify-start">
           
           <TextGenerateEffect
             words="Hi! I'm Manish Rana, Full Stack Developer"
@@ -70,7 +70,7 @@ const Hero = () => {
           {/* <p className="text-start md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl">
            Transforming Concepts into seamless user experiences
           </p> */}
-          <p className="text-start md:tracking-wider mb-4 text-sm md:text-md lg:text-xl my-5">I am a passionate Software Engineer, specialised in front-end development using React, NextJs, NodeJs, TypeScript and more.
+          <p className="text-start md:tracking-wider mb-4 text-sm md:text-md lg:text-xl my-5 ">I am a passionate Software Engineer, specialised in front-end development using React, NextJs, NodeJs, TypeScript and more.
             <br />
           </p>
           <VanishingText className="text-start h-14 md:tracking-wider mt-5 text-sm md:text-md lg:text-xl" textList={taglines} />
