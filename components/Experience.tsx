@@ -1,54 +1,83 @@
-import React from "react";
+interface ExperienceCardProps {
+  role: string;
+  company: string;
+  period: string;
+  points: string[];
+}
 
-import { workExperience } from "@/data";
-import { Button } from "./ui/MovingBorders";
-
-const Experience = () => {
+function ExperienceCard({ role, company, period, points }: ExperienceCardProps) {
   return (
-    <div className="py-20 w-full">
-      <h1 className="heading">
-        My <span className="text-purple">work experience</span>
-      </h1>
-
-      <div className="w-full mt-12 grid lg:grid-cols-4 grid-cols-1 gap-10">
-        {workExperience.map((card) => (
-          <Button
-            key={card.id}
-            //   random duration will be fun , I think , may be not
-            duration={Math.floor(Math.random() * 10000) + 10000}
-            borderRadius="1.75rem"
-            style={{
-              //   add these two
-              //   you can generate the color from here https://cssgradient.io/
-              background: "rgb(4,7,29)",
-              backgroundColor:
-                "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
-              // add this border radius to make it more rounded so that the moving border is more realistic
-              borderRadius: `calc(1.75rem* 0.96)`,
-            }}
-            // remove bg-white dark:bg-slate-900
-            className="flex-1 text-black dark:text-white border-neutral-200 dark:border-slate-800"
-          >
-            <div className="flex lg:flex-row flex-col lg:items-center p-3 py-6 md:p-5 lg:p-10 gap-2">
-              <img
-                src={card.thumbnail}
-                alt={card.thumbnail}
-                className="lg:w-32 md:w-20 w-16"
-              />
-              <div className="lg:ms-5">
-                <h1 className="text-start text-xl md:text-2xl font-bold">
-                  {card.title}
-                </h1>
-                <p className="text-start text-white-100 mt-3 font-semibold">
-                  {card.desc}
-                </p>
-              </div>
-            </div>
-          </Button>
-        ))}
+    <div className="neo-card relative p-6 md:p-8">
+      <div className="absolute -left-[49px] md:-left-[65px] top-8 w-6 h-6 bg-[var(--color-retro-blue)] rounded-full border-2 border-black z-10"></div>
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
+        <div>
+          <h3 className="text-2xl font-bold text-[var(--foreground)]">{role}</h3>
+          <p className="text-xl font-bold text-[var(--foreground)]/70">{company}</p>
+        </div>
+        <span className="neo-pill bg-[var(--foreground)] text-[var(--background)] text-sm transform -rotate-2 border-none">
+          {period}
+        </span>
       </div>
+      <ul className="space-y-2 list-disc list-inside text-[var(--foreground)]/90">
+        {points.map((point, i) => (
+          <li key={i}>{point}</li>
+        ))}
+      </ul>
     </div>
   );
-};
+}
 
-export default Experience;
+export default function Experience() {
+  return (
+    <section className="relative py-12">
+      <div className="flex justify-center mb-12">
+        <div className="inline-block bg-[var(--color-retro-sage)] border-2 border-[var(--color-border)] px-8 py-3 rounded-full transform -rotate-1 shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+          <h2 className="text-4xl font-bold text-[var(--foreground)]">Work Experience</h2>
+        </div>
+      </div>
+      
+      <div className="space-y-12 border-l-4 border-[var(--color-border)] border-dashed ml-4 md:ml-8 pl-8 md:pl-12 py-4">
+        <ExperienceCard
+          role="Full Stack Developer"
+          company="Reactivate (Via APN Consulting)"
+          period="Present"
+          points={[
+            "Building Next.js applications with AWS Amplify.",
+            "Delivering Zero to MVP solutions.",
+            "Developing APIs, Frontend, and managing AWS infrastructure."
+          ]}
+        />
+        <ExperienceCard
+          role="Full Stack Developer"
+          company="Blockpeer Finance"
+          period="Nov 2022 - Sep 2025"
+          points={[
+            "Spearheaded migration from Laravel to Node.js/Next.js.",
+            "Integrated secure payment gateways and authentication systems.",
+            "Developed robust REST APIs on Node.js and managed AWS infrastructure.",
+            "Implemented verifiable digital documents using TradeTrust."
+          ]}
+        />
+        <ExperienceCard
+          role="Full Stack Developer"
+          company="bitcci ag"
+          period="Feb 2019 - Oct 2022"
+          points={[
+            "Designed user-centric interfaces using React and Angular.",
+            "Developed robust backend systems with Node.js.",
+            "Contributed to POCs for blockchain use cases and identity solutions."
+          ]}
+        />
+        <ExperienceCard
+          role="QA Engineer"
+          company="IVP"
+          period="June 2018 - Jan 2019"
+          points={[
+            "Executed manual and automation testing using Selenium WebDriver.",
+            "Developed reusable test cases and automation scripts."
+          ]}
+        />
+      </div>
+    </section>
+  );
+}

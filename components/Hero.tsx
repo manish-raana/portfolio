@@ -1,102 +1,71 @@
-
-import { Spotlight } from "./ui/Spotlight";
-import { TextGenerateEffect } from "./ui/TextGenerateEffect";
-import { Meteors } from "./ui/meteors";
 import Image from "next/image";
-import { GlareCard } from "./ui/glare-card";
-import { VanishingText } from "./ui/TextVanish";
-import MagicButton from "./MagicButton";
-import { FaLinkedin, FaTwitter } from "react-icons/fa6";
 
-const taglines = [
-    "Transforming Concepts into seamless user experiences ",
-    "Bridging front-end finesse with back-end prowess",
-    "Architecting digital solutions from database to interface",
-    "Turning complex problems into elegant full-stack solutions",
-    "Seamlessly connecting users to data through innovative code",
-    "Transforming ideas into full-fledged digital realities "
-];
+interface SocialLinkProps {
+  href: string;
+  label: string;
+  color: string;
+}
 
-const Hero = () => {
-  
+function SocialLink({ href, label, color }: SocialLinkProps) {
   return (
-    <div className="pb-20 pt-36">
-      
-      {/**
-       *  UI: Spotlights
-       *  Link: https://ui.aceternity.com/components/spotlight
-       */}
-      <div>
-        <Meteors number={20} className="absolute z-50"/>  
-        <Spotlight
-          className="-top-40 -left-10 md:-left-32 md:-top-20 h-screen"
-          fill="white"
-        />
-        <Spotlight
-          className="h-[80vh] w-[50vw] top-10 left-full"
-          fill="purple"
-        />
-        <Spotlight className="left-80 top-28 h-[80vh] w-[50vw]" fill="blue" />
-      </div>
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${color} neo-pill text-lg`}
+    >
+      {label}
+    </a>
+  );
+}
 
-      {/**
-       *  UI: grid
-       *  change bg color to bg-black-100 and reduce grid color from
-       *  0.2 to 0.03
-       */}
-      <div
-        className="h-screen w-full dark:bg-black-100 bg-white dark:bg-grid-white/[0.03] bg-grid-black-100/[0.2]
-       absolute top-0 left-0 flex items-center justify-center"
-      >
-        {/* Radial gradient for the container to give a faded look */}
-        <div
-          // chnage the bg to bg-black-100, so it matches the bg color and will blend in
-          className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black-100
-         bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"
-        />
-      </div>
-
-      <div className="flex flex-col md:flex-row justify-center items-center md:justify-between relative md:my-20 z-10">
-        <GlareCard className="flex flex-col items-center justify-center w-full">
-            <Image src={'/photo-large.png'} className="hover:grayscale p-5 rounded-2xl w-full" height={800} width={600} alt="photo" />
-        </GlareCard>
-        <div className="text-center md:text-start md:max-w-[50vw] lg:max-w-[40vw] flex flex-col items-center justify-center md:items-start md:justify-start">
-          
-          <TextGenerateEffect
-            words="Hi! I'm Manish Rana, Full Stack Developer"
-            className="text-start text-[20px] md:text-3xl lg:text-4xl"
+export default function Hero() {
+  return (
+    <section className="flex flex-col items-center text-center space-y-8 py-12">
+      <div className="relative w-48 h-48 md:w-64 md:h-64">
+        {/* Animated Avatar with changing border radius */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Image
+            src="/mkart.png"
+            alt="Avatar"
+            width={400}
+            height={400}
+            layout="responsive"
+            className="animated-radius object-cover border-4 border-black dark:border-gray-400 bg-white dark:bg-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)]"
           />
-         
-          {/* <p className="text-start md:tracking-wider mb-4 text-sm md:text-lg lg:text-2xl">
-           Transforming Concepts into seamless user experiences
-          </p> */}
-          <p className="text-start md:tracking-wider mb-4 text-sm md:text-md lg:text-xl my-5 ">I am a passionate Software Engineer, specialised in front-end development using React, NextJs, NodeJs, TypeScript and more.
-            <br />
-          </p>
-          <VanishingText className="text-start h-14 md:tracking-wider mt-5 text-sm md:text-md lg:text-xl" textList={taglines} />
-          <div className="flex items-center gap-6 mt-5">
-              <a href="https://www.linkedin.com/in/manishraana/" target="_blank">
-                <MagicButton
-                  title="LinkedIn"
-                  otherClasses="hover:bg-blue-500"
-                  icon={<FaLinkedin />}
-                  position="right"
-                />
-              </a>
-              <a href="https://twitter.com/ManishRaanaa" target="_blank">
-                <MagicButton
-                  title="Twitter"
-                  otherClasses="hover:bg-blue-500"
-                  icon={<FaTwitter />}
-                  position="right"
-                />
-              </a>
-            </div>
-            
         </div>
       </div>
-    </div>
-  );
-};
 
-export default Hero;
+      <div className="space-y-4">
+        <h1 className="text-5xl md:text-8xl font-bold tracking-tight text-[var(--foreground)] drop-shadow-sm mb-2">
+          Manish Rana
+        </h1>
+        <div className="inline-block bg-[var(--color-retro-yellow)] px-6 py-2 transform -rotate-1 border-2 border-[var(--color-border)] rounded-lg shadow-[4px_4px_0px_0px_var(--shadow-color)]">
+          <p className="text-xl md:text-2xl text-[var(--foreground)] font-bold">
+            Full Stack Developer
+          </p>
+        </div>
+        <div className="max-w-3xl mx-auto mt-8 space-y-6 text-left">
+          <p className="text-lg md:text-xl text-[var(--foreground)]/80 leading-relaxed">
+            I’m a Full Stack Developer with over 7 years of experience building end-to-end web applications—from crafting seamless user interfaces with React and Next.js to designing efficient, scalable backends with Node.js.
+          </p>
+          <p className="text-lg md:text-xl text-[var(--foreground)]/80 leading-relaxed">
+            My work spans diverse domains, including secure online transactions and blockchain integrations. I thrive on problem-solving—turning complex challenges into clean, practical solutions.
+          </p>
+          <p className="text-lg md:text-xl text-[var(--foreground)]/80 leading-relaxed">
+            Outside of code, I recharge by traveling, exploring nature, and spending time with my kid—my best source of inspiration.
+          </p>
+        </div>
+      </div>
+
+      {/* Social Pills */}
+      <div className="flex flex-wrap justify-center gap-4 mt-8">
+        <SocialLink href="https://www.linkedin.com/in/manishraana/" label="LinkedIn" color="bg-[var(--color-retro-blue)] text-[var(--foreground)]" />
+        <SocialLink href="https://peerlist.io/manishrana" label="Peerlist" color="bg-[var(--color-retro-sage)] text-[var(--foreground)]" />
+        <SocialLink href="https://twitter.com/ManishRaanaa" label="Twitter" color="bg-[var(--color-retro-pink)] text-[var(--foreground)]" />
+        <SocialLink href="mailto:mkrana173@gmail.com" label="Email" color="bg-[var(--color-retro-peach)] text-[var(--foreground)]" />
+        <SocialLink href="https://github.com/manish-raana" label="GitHub" color="bg-[var(--color-retro-yellow)] text-[var(--foreground)]" />
+      </div>
+    </section>
+  );
+}

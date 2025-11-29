@@ -1,73 +1,36 @@
-# Manish Rana - Full Stack Developer
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-📍 Noida, India | 📧 mkrana173@gmail.com | 📱 +91-9717452774
+## Getting Started
 
-## About Me
+First, run the development server:
 
-Innovative Full Stack Developer with 5+ years of experience specializing in blockchain technologies and web development. Proven track record of delivering robust, scalable solutions in fintech and cryptocurrency domains. Passionate about leveraging cutting-edge technologies to solve complex business challenges.
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-🌍 Open to working across different time zones
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Technical Skills
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-- **Frontend:** Angular, TypeScript, React.js, Next.js 14, Web3, IPFS, Wallet Integration, Tailwind CSS
-- **Backend:** Node.js, Express, TypeScript, Solidity
-- **DevOps:** Docker, AWS, Kubernetes, Jenkins, Nginx, CI/CD
-- **Database:** MySQL, MongoDB, PostgreSQL, Supabase, Firebase
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Work Experience
+## Learn More
 
-### Full Stack Developer - Blockpeer Finance (Dec 2022 - Present)
-- Developed dynamic user interfaces using React.js and Next.js
-- Integrated Web3 wallets and smart contracts for blockchain interactions
-- Built robust REST APIs and comprehensive frontend solutions
-- Engineered systems for crypto transfers and blockchain-based document verification
+To learn more about Next.js, take a look at the following resources:
 
-### Full Stack Developer - bitcci ag (Apr 2019 - Nov 2022)
-- Created interfaces for various applications within the Bitcci ecosystem using React and Angular
-- Developed REST APIs and frontend solutions
-- Integrated Web3 wallets and smart contracts
-- Contributed to proof-of-concept planning and development
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## Key Projects
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-### PDC NFT Marketplace
-- **Tech Stack:** Next.js 14, Web3, Tailwind CSS, Docker, Alchemy SDK, Covalent SDK
-- Developed an interactive NFT marketplace for buying and selling discounted PDC NFTs
+## Deploy on Vercel
 
-### Decentralized Identity Solution
-- **Tech Stack:** Next.js 14, PostgreSQL, Tailwind CSS, Docker, Node.js, Express, AWS
-- Created a blockchain-based digital identity management system with verifiable credentials
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-### AI Image Generation
-- **Tech Stack:** Next.js 14, Tailwind CSS, DaisyUI, Vercel, DALL-E, Stable Diffusion API
-- Developed a web app for AI-powered image generation
-
-### Decentralized Finance (DeFi) Dashboard
-- **Tech Stack:** Next.js 14, Web3 libraries, PostgreSQL, Tailwind CSS, AWS, Solidity
-- Built a comprehensive DeFi dashboard aggregating data from various protocols
-
-## Soft Skills
-
-- Agile methodologies
-- Team leadership
-- Problem-solving
-- Cross-functional collaboration
-- Project management
-
-## Interests
-
-- Decentralized Finance (DeFi) innovations
-- Blockchain scalability solutions
-- Web3 user experience optimization
-- Cryptographic systems and zero-knowledge proofs
-
-## Education
-
-- B.Tech in Computer Science Engineering, Sharda University (2014 - 2018)
-
-## Let's Connect!
-
-I'm always open to discussing new projects, innovative ideas, or opportunities to be part of your vision. Feel free to reach out!
-
-[LinkedIn](#https://www.linkedin.com/in/manishraana) | [Twitter](#https://twitter.com/ManishRaanaa) | [Portfolio](#https://manishrana.in/)
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

@@ -1,0 +1,369 @@
+---
+title: "Production-Level Variable Definitions: Security Best Practices"
+description: "Learn how to define variables securely in production using TypeScript's 'as const', Object.freeze(), and other techniques to prevent accidental mutations and security issues."
+excerpt: "Secure your production code with proper variable definitions. Learn about 'as const', Object.freeze(), and other techniques to prevent bugs and security issues."
+date: '2025-12-03'
+author: 'Manish Rana'
+tags: ['typescript', 'javascript', 'security', 'best-practices', 'web-development']
+---
+
+I once spent an entire afternoon debugging a bug that shouldn't have existed. A configuration value was changing unexpectedly, breaking features for users. After hours of investigation, I found the problem: someone had accidentally mutated a constant object.
+
+It was a simple mistake – they added a property to what they thought was a copy, but it was actually mutating the original. The fix was easy, but the damage was done. Users experienced issues, and I learned an important lesson: in production, you need to protect your variables.
+
+## Why Variable Security Matters
+
+In production applications, variables often hold critical data:
+- API endpoints
+- Configuration values
+- Constants that shouldn't change
+- Sensitive information (even if not directly exposed)
+
+If these get mutated accidentally, you get bugs. If they get mutated maliciously, you get security issues. Either way, it's bad.
+
+The solution? Make your variables immutable. Here's how.
+
+## TypeScript's `as const`: Making Values Truly Constant
+
+TypeScript's `as const` is one of my favorite features. It does two things:
+1. Makes the value readonly
+2. Narrows the type to the exact literal value
+
+### Basic Example
+
+```typescript
+// Without 'as const' - type is string
+const API_URL = "https://api.example.com";
+// API_URL can be reassigned (in some contexts)
+// Type is: string
+
+// With 'as const' - type is the literal "https://api.example.com"
+const API_URL = "https://api.example.com" as const;
+// Type is: "https://api.example.com"
+// More specific, better type checking
+```
+
+### Arrays and Objects
+
+Where `as const` really shines is with arrays and objects:
+
+```typescript
+// Without 'as const'
+const ALLOWED_ROLES = ["admin", "user", "guest"];
+// Type: string[]
+// Can be mutated: ALLOWED_ROLES.push("hacker") // Works!
+
+// With 'as const'
+const ALLOWED_ROLES = ["admin", "user", "guest"] as const;
+// Type: readonly ["admin", "user", "guest"]
+// Cannot be mutated: ALLOWED_ROLES.push("hacker") // Error!
+```
+
+### Objects with `as const`
+
+```typescript
+// Without 'as const'
+const CONFIG = {
+  apiUrl: "https://api.example.com",
+  timeout: 5000,
+  retries: 3
+};
+// Can be mutated: CONFIG.timeout = 0; // Works!
+
+// With 'as const'
+const CONFIG = {
+  apiUrl: "https://api.example.com",
+  timeout: 5000,
+  retries: 3
+} as const;
+// Cannot be mutated: CONFIG.timeout = 0; // Error!
+// All properties are readonly
+```
+
+### Real-World Example: API Configuration
+
+Here's how I structure API configurations in production:
+
+```typescript
+const API_CONFIG = {
+  baseUrl: process.env.NEXT_PUBLIC_API_URL || "https://api.example.com",
+  endpoints: {
+    auth: "/auth",
+    users: "/users",
+    orders: "/orders"
+  },
+  timeout: 5000,
+  retries: 3
+} as const;
+
+// TypeScript prevents mutations:
+// API_CONFIG.timeout = 0; // Error: Cannot assign to 'timeout' because it is a read-only property
+// API_CONFIG.endpoints.auth = "/hacked"; // Error: Cannot assign to 'auth' because it is a read-only property
+```
+
+## Object.freeze(): Runtime Protection
+
+While `as const` gives you compile-time protection, `Object.freeze()` gives you runtime protection. It prevents modifications to objects at runtime.
+
+### Basic Usage
+
+```typescript
+const CONFIG = Object.freeze({
+  apiUrl: "https://api.example.com",
+  timeout: 5000,
+  retries: 3
+});
+
+// These will fail silently in strict mode, or throw errors:
+CONFIG.timeout = 0; // Doesn't work
+CONFIG.newProperty = "hack"; // Doesn't work
+delete CONFIG.timeout; // Doesn't work
+```
+
+### Shallow vs Deep Freeze
+
+Important: `Object.freeze()` only freezes the top level. Nested objects can still be mutated:
+
+```typescript
+const CONFIG = Object.freeze({
+  apiUrl: "https://api.example.com",
+  endpoints: {
+    auth: "/auth",
+    users: "/users"
+  }
+});
+
+// This fails:
+CONFIG.apiUrl = "https://hacked.com"; // Doesn't work
+
+// But this works (nested object isn't frozen):
+CONFIG.endpoints.auth = "/hacked"; // Works! 😱
+```
+
+### Deep Freeze Solution
+
+For nested objects, you need deep freezing:
+
+```typescript
+function deepFreeze<T>(obj: T): T {
+  Object.getOwnPropertyNames(obj).forEach(prop => {
+    const value = obj[prop as keyof T];
+    if (value && typeof value === 'object') {
+      deepFreeze(value);
+    }
+  });
+  return Object.freeze(obj);
+}
+
+const CONFIG = deepFreeze({
+  apiUrl: "https://api.example.com",
+  endpoints: {
+    auth: "/auth",
+    users: "/users"
+  }
+});
+
+// Now this fails too:
+CONFIG.endpoints.auth = "/hacked"; // Doesn't work! ✅
+```
+
+## Combining `as const` and `Object.freeze()`
+
+For maximum protection, use both:
+
+```typescript
+const CONFIG = deepFreeze({
+  apiUrl: "https://api.example.com",
+  endpoints: {
+    auth: "/auth",
+    users: "/users"
+  },
+  timeout: 5000
+} as const);
+
+// Compile-time protection from 'as const'
+// Runtime protection from deepFreeze
+// Best of both worlds!
+```
+
+## Enums: Type-Safe Constants
+
+TypeScript enums are another way to define constants:
+
+```typescript
+enum UserRole {
+  ADMIN = "admin",
+  USER = "user",
+  GUEST = "guest"
+}
+
+// Type-safe usage:
+function checkAccess(role: UserRole) {
+  if (role === UserRole.ADMIN) {
+    // Admin access
+  }
+}
+
+// Prevents typos:
+checkAccess("admn"); // Error: Argument of type '"admn"' is not assignable
+checkAccess(UserRole.ADMIN); // ✅ Works
+```
+
+### Const Enums for Better Performance
+
+For production, use `const enum` to avoid runtime overhead:
+
+```typescript
+const enum UserRole {
+  ADMIN = "admin",
+  USER = "user",
+  GUEST = "guest"
+}
+
+// TypeScript inlines the values at compile time
+// No runtime object created
+```
+
+## Readonly Arrays and Tuples
+
+For arrays, TypeScript provides `ReadonlyArray`:
+
+```typescript
+const PERMISSIONS: ReadonlyArray<string> = ["read", "write", "delete"];
+
+// Cannot mutate:
+PERMISSIONS.push("hack"); // Error!
+PERMISSIONS[0] = "hacked"; // Error!
+
+// But can read:
+const first = PERMISSIONS[0]; // ✅ Works
+```
+
+Or use readonly tuples:
+
+```typescript
+const STATUS_CODES = [200, 404, 500] as const;
+// Type: readonly [200, 404, 500]
+
+// Cannot mutate:
+STATUS_CODES.push(403); // Error!
+```
+
+## Real-World Production Example
+
+Here's how I structure production configuration:
+
+```typescript
+// Environment variables with defaults
+const ENV = deepFreeze({
+  apiUrl: process.env.NEXT_PUBLIC_API_URL || "https://api.example.com",
+  environment: (process.env.NODE_ENV || "development") as "development" | "production" | "test",
+  debug: process.env.NEXT_PUBLIC_DEBUG === "true"
+} as const);
+
+// API endpoints (never change)
+const API_ENDPOINTS = deepFreeze({
+  auth: {
+    login: "/auth/login",
+    logout: "/auth/logout",
+    refresh: "/auth/refresh"
+  },
+  users: {
+    list: "/users",
+    get: (id: string) => `/users/${id}`,
+    create: "/users"
+  }
+} as const);
+
+// Application constants
+const APP_CONSTANTS = deepFreeze({
+  maxRetries: 3,
+  timeout: 5000,
+  pageSize: 20,
+  allowedFileTypes: ["image/jpeg", "image/png", "image/webp"] as const
+} as const);
+
+// Export for use
+export { ENV, API_ENDPOINTS, APP_CONSTANTS };
+```
+
+## Common Mistakes to Avoid
+
+### Mistake 1: Forgetting Nested Objects
+
+```typescript
+// ❌ Bad - nested objects can be mutated
+const CONFIG = Object.freeze({
+  endpoints: {
+    auth: "/auth"
+  }
+});
+
+CONFIG.endpoints.auth = "/hacked"; // Works!
+
+// ✅ Good - deep freeze
+const CONFIG = deepFreeze({
+  endpoints: {
+    auth: "/auth"
+  }
+});
+
+CONFIG.endpoints.auth = "/hacked"; // Doesn't work!
+```
+
+### Mistake 2: Not Using `as const` with Arrays
+
+```typescript
+// ❌ Bad - array can be mutated
+const ROLES = ["admin", "user"];
+
+ROLES.push("hacker"); // Works!
+
+// ✅ Good - readonly array
+const ROLES = ["admin", "user"] as const;
+
+ROLES.push("hacker"); // Error!
+```
+
+### Mistake 3: Mutating Constants in Functions
+
+```typescript
+// ❌ Bad - mutating global constant
+const DEFAULT_CONFIG = { timeout: 5000 };
+
+function updateConfig(newTimeout: number) {
+  DEFAULT_CONFIG.timeout = newTimeout; // Mutates global!
+}
+
+// ✅ Good - create a copy
+function updateConfig(newTimeout: number) {
+  return { ...DEFAULT_CONFIG, timeout: newTimeout };
+}
+```
+
+## When to Use What
+
+- **`as const`**: Use for compile-time type safety and preventing mutations in TypeScript
+- **`Object.freeze()`**: Use for runtime protection, especially in JavaScript or when you need runtime guarantees
+- **`deepFreeze()`**: Use when you have nested objects that need protection
+- **Enums**: Use for a fixed set of related constants (like status codes, roles)
+- **`ReadonlyArray`**: Use for arrays that shouldn't be mutated
+
+## Performance Considerations
+
+- `as const` has zero runtime cost – it's compile-time only
+- `Object.freeze()` has minimal runtime cost
+- `const enum` has zero runtime cost – values are inlined
+- Regular `enum` creates a runtime object
+
+For production, prefer `as const` and `const enum` when possible.
+
+## The Bottom Line
+
+In production, your variables need protection. Accidental mutations cause bugs. Malicious mutations cause security issues. Neither is acceptable.
+
+Use `as const` for compile-time safety. Use `Object.freeze()` or `deepFreeze()` for runtime protection. Use enums for type-safe constants. Combine them for maximum security.
+
+The small effort of making variables immutable pays off in fewer bugs, better security, and more maintainable code. Your future self – and your users – will thank you.
+
+Start protecting your variables today. It's one of those small changes that makes a big difference.

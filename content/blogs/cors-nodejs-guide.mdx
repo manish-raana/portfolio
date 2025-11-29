@@ -1,0 +1,555 @@
+---
+title: "CORS in Node.js: Complete Guide to Cross-Origin Resource Sharing"
+description: "Learn everything about CORS in Node.js - why it exists, how to configure it, dynamic CORS setup, testing strategies, and security protections against common attacks."
+excerpt: "Master CORS in Node.js. Learn why it exists, how to configure it properly, set up dynamic CORS, test CORS issues, and understand the security protections it provides."
+date: '2025-12-04'
+author: 'Manish Rana'
+tags: ['nodejs', 'cors', 'security', 'backend', 'web-development', 'api']
+---
+
+I remember the first time I encountered a CORS error. I was building a frontend that needed to call my backend API, and suddenly everything stopped working. The browser showed a cryptic error about "CORS policy" and "no 'Access-Control-Allow-Origin' header."
+
+I had no idea what CORS was or why it was blocking my requests. After hours of frustration, I finally understood: CORS isn't trying to make your life harder. It's protecting users from malicious websites.
+
+Let me explain everything you need to know about CORS in Node.js.
+
+## What is CORS and Why Does It Exist?
+
+CORS stands for Cross-Origin Resource Sharing. It's a security mechanism built into browsers that controls which websites can make requests to your server.
+
+### The Same-Origin Policy
+
+Browsers enforce something called the "Same-Origin Policy." This means a website can only make requests to the same origin (same protocol, domain, and port). For example:
+
+- `https://example.com` can request from `https://example.com` ✅
+- `https://example.com` cannot request from `https://api.example.com` ❌
+- `https://example.com` cannot request from `http://example.com` ❌ (different protocol)
+
+This policy exists to prevent malicious websites from making unauthorized requests on your behalf.
+
+### Why CORS Exists
+
+Imagine you're logged into your bank's website. Without CORS, a malicious website could make requests to your bank's API using your cookies, potentially transferring money or accessing your account. CORS prevents this by requiring explicit permission.
+
+## Basic CORS Setup in Node.js
+
+Let's start with a basic Express.js setup:
+
+```typescript
+import express from 'express';
+import cors from 'cors';
+
+const app = express();
+
+// Basic CORS - allows all origins (NOT recommended for production!)
+app.use(cors());
+
+app.get('/api/data', (req, res) => {
+  res.json({ message: 'Hello from API' });
+});
+
+app.listen(3000);
+```
+
+This allows all origins, which works for development but is dangerous in production.
+
+## Proper CORS Configuration
+
+For production, you need to be specific:
+
+```typescript
+import express from 'express';
+import cors from 'cors';
+
+const app = express();
+
+// Configure CORS with specific origins
+app.use(cors({
+  origin: 'https://mywebsite.com',
+  credentials: true, // Allow cookies
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.get('/api/data', (req, res) => {
+  res.json({ message: 'Hello from API' });
+});
+
+app.listen(3000);
+```
+
+### Multiple Allowed Origins
+
+You can allow multiple origins:
+
+```typescript
+const allowedOrigins = [
+  'https://mywebsite.com',
+  'https://www.mywebsite.com',
+  'https://admin.mywebsite.com'
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+```
+
+## Dynamic CORS Configuration
+
+Sometimes you need dynamic CORS based on the request. Here's how:
+
+### Based on Environment
+
+```typescript
+import express from 'express';
+import cors from 'cors';
+
+const app = express();
+
+const corsOptions = {
+  origin: (origin: string | undefined, callback: Function) => {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+
+    const allowedOrigins = process.env.NODE_ENV === 'production'
+      ? [
+          'https://mywebsite.com',
+          'https://www.mywebsite.com'
+        ]
+      : [
+          'http://localhost:3000',
+          'http://localhost:3001',
+          'http://127.0.0.1:3000'
+        ];
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
+app.use(cors(corsOptions));
+```
+
+### Based on Request Path
+
+```typescript
+const corsOptions = {
+  origin: (origin: string | undefined, callback: Function) => {
+    // Allow all origins for public endpoints
+    if (!origin) return callback(null, true);
+    
+    // For admin endpoints, only allow specific origins
+    const isAdminPath = req.path?.startsWith('/api/admin');
+    const allowedOrigins = isAdminPath
+      ? ['https://admin.mywebsite.com']
+      : ['https://mywebsite.com', 'https://www.mywebsite.com'];
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+```
+
+### Dynamic Based on Database/Config
+
+```typescript
+import { getAllowedOrigins } from './config';
+
+const corsOptions = {
+  origin: async (origin: string | undefined, callback: Function) => {
+    if (!origin) return callback(null, true);
+    
+    // Fetch allowed origins from database or config
+    const allowedOrigins = await getAllowedOrigins();
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+```
+
+## Manual CORS Headers (Without Middleware)
+
+Sometimes you need more control. Here's how to set CORS headers manually:
+
+```typescript
+import express from 'express';
+
+const app = express();
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  const allowedOrigins = [
+    'https://mywebsite.com',
+    'https://www.mywebsite.com'
+  ];
+
+  if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours
+  }
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+
+app.get('/api/data', (req, res) => {
+  res.json({ message: 'Hello from API' });
+});
+```
+
+## Understanding Preflight Requests
+
+Some requests trigger a "preflight" request first. This is an OPTIONS request that checks if the actual request is allowed.
+
+### Simple Requests (No Preflight)
+
+These don't trigger preflight:
+- GET, HEAD, POST
+- Content-Type: `text/plain`, `application/x-www-form-urlencoded`, `multipart/form-data`
+- Only standard headers
+
+### Preflight Requests
+
+These trigger preflight:
+- PUT, DELETE, PATCH
+- Custom headers (like `Authorization`)
+- Content-Type: `application/json`
+
+```typescript
+// This request triggers preflight:
+fetch('https://api.example.com/users', {
+  method: 'DELETE',
+  headers: {
+    'Authorization': 'Bearer token123',
+    'Content-Type': 'application/json'
+  }
+});
+
+// Browser first sends OPTIONS request
+// Then sends DELETE if allowed
+```
+
+## Testing CORS Issues
+
+### Using Browser DevTools
+
+1. Open DevTools (F12)
+2. Go to Network tab
+3. Make a request from your frontend
+4. Check the request:
+   - If blocked, you'll see a CORS error in console
+   - Check Response Headers for `Access-Control-Allow-Origin`
+
+### Testing with curl
+
+```bash
+# Test preflight request
+curl -X OPTIONS http://localhost:3000/api/data \
+  -H "Origin: http://localhost:3000" \
+  -H "Access-Control-Request-Method: POST" \
+  -H "Access-Control-Request-Headers: Content-Type" \
+  -v
+
+# Test actual request
+curl -X GET http://localhost:3000/api/data \
+  -H "Origin: http://localhost:3000" \
+  -v
+```
+
+### Testing Script
+
+```typescript
+// test-cors.ts
+async function testCORS() {
+  const testOrigins = [
+    'http://localhost:3000',
+    'https://mywebsite.com',
+    'https://evil.com'
+  ];
+
+  for (const origin of testOrigins) {
+    try {
+      const response = await fetch('http://localhost:3000/api/data', {
+        method: 'GET',
+        headers: {
+          'Origin': origin
+        }
+      });
+      console.log(`✅ ${origin}: Allowed`);
+    } catch (error) {
+      console.log(`❌ ${origin}: Blocked - ${error.message}`);
+    }
+  }
+}
+
+testCORS();
+```
+
+## Common CORS Errors and Solutions
+
+### Error: "No 'Access-Control-Allow-Origin' header"
+
+**Problem**: Server isn't sending CORS headers.
+
+**Solution**:
+```typescript
+app.use(cors({
+  origin: 'https://mywebsite.com'
+}));
+```
+
+### Error: "Credentials flag is true, but 'Access-Control-Allow-Credentials' is not 'true'"
+
+**Problem**: Using credentials but not allowing them.
+
+**Solution**:
+```typescript
+app.use(cors({
+  origin: 'https://mywebsite.com',
+  credentials: true // Add this
+}));
+```
+
+### Error: "Request header field authorization is not allowed"
+
+**Problem**: Custom headers not allowed.
+
+**Solution**:
+```typescript
+app.use(cors({
+  origin: 'https://mywebsite.com',
+  allowedHeaders: ['Content-Type', 'Authorization'] // Add custom headers
+}));
+```
+
+## Security Attacks CORS Protects Against
+
+### 1. CSRF (Cross-Site Request Forgery)
+
+**Attack**: Malicious site makes requests using your cookies.
+
+**How CORS helps**: Only allowed origins can make requests with credentials.
+
+```typescript
+// Without CORS protection:
+// evil.com can make requests to your API using user's cookies
+// With CORS:
+app.use(cors({
+  origin: 'https://mywebsite.com', // Only your site allowed
+  credentials: true
+}));
+// evil.com requests are blocked
+```
+
+### 2. Unauthorized API Access
+
+**Attack**: Anyone can call your API endpoints.
+
+**How CORS helps**: Restricts which origins can access your API.
+
+```typescript
+// Without CORS:
+// Anyone can call your API from any website
+// With CORS:
+app.use(cors({
+  origin: ['https://mywebsite.com'] // Only specific origins
+}));
+// Other origins are blocked
+```
+
+### 3. Data Exfiltration
+
+**Attack**: Malicious site reads data from your API.
+
+**How CORS helps**: Prevents unauthorized sites from reading responses.
+
+```typescript
+// Malicious site tries to read your API response
+fetch('https://api.mybank.com/account')
+  .then(res => res.json())
+  .then(data => sendToEvilServer(data)); // Blocked by CORS!
+```
+
+### 4. Credential Theft
+
+**Attack**: Malicious site uses your cookies/credentials.
+
+**How CORS helps**: Only allowed origins can send credentials.
+
+```typescript
+app.use(cors({
+  origin: 'https://mywebsite.com',
+  credentials: true // Only mywebsite.com can send cookies
+}));
+```
+
+## Best Practices
+
+### 1. Never Use `origin: '*'` with Credentials
+
+```typescript
+// ❌ Bad - doesn't work with credentials
+app.use(cors({
+  origin: '*',
+  credentials: true // This will fail!
+}));
+
+// ✅ Good - specify origins
+app.use(cors({
+  origin: ['https://mywebsite.com'],
+  credentials: true
+}));
+```
+
+### 2. Use Environment Variables
+
+```typescript
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
+  'http://localhost:3000'
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+```
+
+### 3. Validate Origins Properly
+
+```typescript
+const corsOptions = {
+  origin: (origin: string | undefined, callback: Function) => {
+    // Don't trust the origin header - validate it!
+    if (!origin) return callback(null, true);
+    
+    // Check against whitelist
+    const allowedOrigins = getWhitelistedOrigins();
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
+```
+
+### 4. Set Appropriate Max-Age
+
+```typescript
+app.use(cors({
+  origin: 'https://mywebsite.com',
+  maxAge: 86400 // Cache preflight for 24 hours
+}));
+```
+
+### 5. Log CORS Violations
+
+```typescript
+const corsOptions = {
+  origin: (origin: string | undefined, callback: Function) => {
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = getAllowedOrigins();
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      // Log blocked requests for security monitoring
+      console.warn(`CORS blocked request from: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
+```
+
+## Complete Production Example
+
+Here's a complete, production-ready CORS setup:
+
+```typescript
+import express from 'express';
+import cors from 'cors';
+
+const app = express();
+
+// CORS configuration
+const corsOptions = {
+  origin: (origin: string | undefined, callback: Function) => {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+
+    const allowedOrigins = process.env.NODE_ENV === 'production'
+      ? process.env.ALLOWED_ORIGINS?.split(',') || []
+      : ['http://localhost:3000', 'http://localhost:3001'];
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn(`CORS blocked: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-Requested-With',
+    'Accept',
+    'Origin'
+  ],
+  exposedHeaders: ['X-Total-Count', 'X-Page-Count'],
+  maxAge: 86400, // 24 hours
+  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+};
+
+app.use(cors(corsOptions));
+
+// Your routes
+app.get('/api/data', (req, res) => {
+  res.json({ message: 'Hello from API' });
+});
+
+app.listen(3000);
+```
+
+## The Bottom Line
+
+CORS isn't trying to make your life difficult. It's protecting users from malicious websites trying to abuse your API. Understanding CORS helps you:
+
+- Configure it properly for your use case
+- Debug issues quickly
+- Secure your API endpoints
+- Provide a better developer experience
+
+Take the time to configure CORS correctly. Don't just allow all origins – be specific. Use environment variables. Validate origins properly. Your users' security depends on it.
+
+Remember: CORS is a browser security feature. It doesn't protect against direct API calls (like from Postman or curl). Always implement proper authentication and authorization on your server, regardless of CORS settings.
+
+Start securing your APIs today. Your users will thank you.

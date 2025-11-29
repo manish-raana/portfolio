@@ -1,0 +1,93 @@
+---
+title: "Designing with Tailwind CSS"
+description: "Why Tailwind CSS changed how I think about styling web applications, and how it makes building beautiful UIs faster and more enjoyable."
+excerpt: "Tailwind CSS changed how I think about styling. Here's why it makes building beautiful UIs faster and more enjoyable."
+date: '2025-11-27'
+author: 'Manish Rana'
+tags: ['tailwind', 'css', 'design', 'frontend', 'web-development']
+---
+
+Let me tell you a story. A few years ago, I was working on a project where I spent more time writing CSS than actually building features. I'd create a component, then jump to a separate CSS file, write styles, come back to my component, realize something didn't look right, jump back to CSS, and repeat this dance over and over again.
+
+It was exhausting. And honestly, it wasn't fun.
+
+Then I discovered Tailwind CSS, and everything changed.
+
+## What is Tailwind CSS Anyway?
+
+If you're new to Tailwind, here's the simple explanation: instead of writing CSS in separate files, you write styles directly in your HTML using utility classes. Instead of creating a class called `.button-primary` in a CSS file, you just write `bg-blue-500 text-white px-4 py-2 rounded-lg` right in your component.
+
+At first, this might sound weird. I know it did to me. "Won't my HTML get messy?" I thought. But here's the thing – it doesn't. And the benefits are incredible.
+
+## Why I Fell in Love with Tailwind
+
+### Speed, Speed, Speed
+
+The biggest win for me is how fast I can build things now. When I'm designing a component, I don't have to think about naming conventions, I don't have to switch between files, and I don't have to remember what styles I already wrote. I just write what I need, right where I need it.
+
+Want a button with blue background and white text? `bg-blue-500 text-white`. Need some padding? `px-4 py-2`. Want it rounded? `rounded-lg`. Done. It's that simple.
+
+### No More Naming Struggles
+
+Remember those moments when you'd spend five minutes trying to come up with a good class name? `.card-container-wrapper`? `.card-wrapper-container`? `.card-inner-wrapper`? We've all been there.
+
+With Tailwind, you don't name things. You just style them. It's liberating.
+
+### Consistency Without Trying
+
+Here's something cool: Tailwind comes with a built-in design system. Colors, spacing, typography – everything follows a consistent scale. When you use `text-lg`, you know it's going to be 18px. When you use `mb-4`, you know it's 16px of margin. This consistency happens automatically, without you having to think about it.
+
+### Small Bundle Sizes
+
+One of the biggest myths about Tailwind is that it makes your CSS huge. Actually, it's the opposite. Tailwind uses a process called "purging" (or tree-shaking) that removes any CSS you're not using. So if you only use 100 utility classes, you only ship those 100 classes. Your final CSS file is often smaller than what you'd write manually.
+
+## Real-World Example: Building This Portfolio
+
+When I built this portfolio, I wanted a fun, hand-drawn aesthetic. Everything needed to look a bit sketchy and playful. With traditional CSS, this would have been a nightmare. I'd need custom classes for every little detail.
+
+With Tailwind, I could experiment quickly. Want a border that looks hand-drawn? `border-2 border-black rounded-[255px_15px_225px_15px/15px_225px_15px_255px]`. That weird syntax? It's Tailwind's arbitrary value feature – you can write any CSS value you want, even custom ones.
+
+I could try different colors, spacing, and effects in real-time. If something didn't look right, I'd change it immediately. No file switching, no scrolling through hundreds of lines of CSS.
+
+## The Learning Curve (It's Not That Bad)
+
+I'll be honest – there's a learning curve. When you first see `flex items-center justify-between gap-4`, it looks like gibberish. But here's the secret: Tailwind's naming is actually really logical once you get it.
+
+- `flex` = display: flex
+- `items-center` = align-items: center
+- `justify-between` = justify-content: space-between
+- `gap-4` = gap: 1rem
+
+After a week or two, you'll read Tailwind classes like a second language. And the best part? You'll rarely need to look things up because the names are so intuitive.
+
+## When Tailwind Shines
+
+Tailwind is perfect for:
+- **Rapid prototyping** – Build UIs super fast
+- **Component libraries** – Consistent styling across your app
+- **Small to medium projects** – Where you want speed without complexity
+- **Teams** – Everyone uses the same utilities, so code reviews are easier
+
+## When You Might Want Something Else
+
+Tailwind isn't perfect for everything. If you're building a very simple static site with just a few pages, traditional CSS might be simpler. If you need complex animations or very specific design requirements that don't fit Tailwind's model, you might want to use CSS-in-JS or traditional CSS.
+
+But honestly? I've used Tailwind on projects big and small, and it's worked great for all of them.
+
+## My Workflow Now
+
+Here's how I work now: I start building a component, and as I think about what it should look like, I write the Tailwind classes. It's almost like sketching, but with code. I can see the result immediately, tweak it, and move on.
+
+For this portfolio, I probably saved hours of development time. And more importantly, I had more fun building it. When styling isn't a chore, you can focus on what actually matters – making something that looks great and works well.
+
+## Getting Started
+
+If you're curious about Tailwind, here's my advice: just try it. Pick a small project, install it, and build something. Don't worry about learning everything at once. Start with the basics – colors, spacing, typography. Then gradually learn more advanced features like responsive design, hover states, and custom configurations.
+
+The Tailwind documentation is fantastic. It's clear, well-organized, and has examples for everything. You'll be productive in no time.
+
+## The Bottom Line
+
+Tailwind CSS changed how I think about styling. It's not just a tool – it's a different way of working. It's faster, more consistent, and honestly, more fun. If you're tired of the CSS file shuffle, give Tailwind a try. You might just fall in love with it too.
+
+And hey, if you're looking at this portfolio and thinking "wow, those styles look cool," well, that's Tailwind making it easy to experiment and create something unique. That's the real power – it doesn't make everything look the same. It makes it easier to make things look exactly how you want them to.

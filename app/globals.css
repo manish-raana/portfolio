@@ -1,87 +1,160 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+:root {
+  /* Notebook Paper Background Color */
+  --background: #fffdf5;
+  --foreground: #1a1a1a;
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
-
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-  }
+  /* Retro Pop Palette - Light Mode */
+  --color-retro-sage: #c3e8bd;      /* Soft Green */
+  --color-retro-blue: #b8d8e6;      /* Soft Blue */
+  --color-retro-peach: #fbdeb2;     /* Soft Peach/Orange */
+  --color-retro-pink: #ffc4d6;      /* Soft Pink */
+  --color-retro-yellow: #fdf2b0;    /* Soft Yellow */
+  
+  /* Accents for borders/text */
+  --color-border: #1a1a1a;
+  --shadow-color: rgba(0, 0, 0, 1);
 }
 
-@layer base {
-  * {
-    @apply border-border !scroll-smooth;
-  }
+.dark {
+  /* Dark Notebook Mode */
+  --background: #1a1a1a;
+  --foreground: #f5f5f5;
 
-  body {
-    @apply bg-background text-foreground;
-  }
+  /* Retro Pop Palette - Dark Mode (Slightly muted/darker for contrast) */
+  --color-retro-sage: #2d4a35;
+  --color-retro-blue: #2f3d42;
+  --color-retro-peach: #4d4530;
+  --color-retro-pink: #4d2f35;
+  --color-retro-yellow: #4d4530;
 
-  button {
-    @apply active:outline-none;
-  }
+  --color-border: #e5e5e5;
+  --shadow-color: rgba(255, 255, 255, 0.2);
 }
 
-@layer utilities {
-  .heading {
-    @apply font-bold text-4xl md:text-5xl text-center;
-  }
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-retro-sage: var(--color-retro-sage);
+  --color-retro-blue: var(--color-retro-blue);
+  --color-retro-peach: var(--color-retro-peach);
+  --color-retro-pink: var(--color-retro-pink);
+  --color-retro-yellow: var(--color-retro-yellow);
+
+  --font-sans: var(--font-patrick-hand), cursive;
+  --font-heading: var(--font-fraunces), serif;
+  
+  --shadow-hard: 4px 4px 0px 0px var(--shadow-color);
+  --shadow-hard-hover: 8px 8px 0px 0px var(--shadow-color);
+  --shadow-hard-sm: 2px 2px 0px 0px var(--shadow-color);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  
+  /* Lined Paper Pattern */
+  background-image: linear-gradient(var(--foreground) 1px, transparent 1px);
+  background-size: 100% 2rem; /* Spacing of lines */
+  background-position: 0 0.5rem; /* Offset */
+  
+  /* Make lines subtle */
+  background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+}
+
+.dark body {
+  background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+}
+
+/* Component Base Styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700; /* Bold weight for Fraunces look */
+}
+
+/* Neo-Brutalism Card Style */
+.neo-card {
+  background-color: white;
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-hard);
+  transition: all 0.2s ease-in-out;
+}
+
+.dark .neo-card {
+  background-color: #262626; /* Dark gray card background */
+}
+
+.neo-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-hard-hover);
+}
+
+/* Pill Button Style */
+.neo-pill {
+  background-color: var(--color-border);
+  color: var(--background);
+  border: 2px solid var(--color-border);
+  border-radius: 9999px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.neo-pill:hover {
+  background-color: transparent;
+  color: var(--color-border);
+  transform: translate(-2px, -2px);
+  box-shadow: var(--shadow-hard-sm);
+}
+
+/* Rotation Utilities */
+.rotate-1-cw { transform: rotate(1deg); }
+.rotate-1-ccw { transform: rotate(-1deg); }
+.rotate-2-cw { transform: rotate(2deg); }
+.rotate-2-ccw { transform: rotate(-2deg); }
+
+/* Animations */
+@keyframes radiusChange {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+}
+
+.animated-radius {
+  animation: radiusChange 8s ease-in-out infinite;
+}
+
+/* Code block styling */
+pre { position: relative; }
+pre code {
+  display: block; padding: 0; background: transparent; border: none;
+  font-size: 0.875rem; line-height: 1.6;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+pre code.hljs { padding: 0; background: transparent; }
+
+/* Syntax highlighting - kept from previous iteration as it fits the vibe */
+.hljs-comment, .hljs-quote { color: #9ca3af; font-style: italic; font-family: 'Comic Sans MS', sans-serif; }
+.hljs-keyword, .hljs-selector-tag { color: #ec4899; font-weight: bold; }
+.hljs-string { color: #3b82f6; }
+.hljs-function { color: #8b5cf6; }
+.hljs-number { color: #f59e0b; }
+
+.dark .hljs-keyword { color: #f472b6; }
+.dark .hljs-string { color: #60a5fa; }
+.dark .hljs-function { color: #a78bfa; }
+.dark .hljs-number { color: #fbbf24; }
+
+/* Custom Selection Color */
+::selection {
+  background-color: #ffc4d6; /* Retro Pink */
+  color: #1a1a1a;
+}
+
+.dark ::selection {
+  background-color: #f472b6; /* Vibrant Pink for Dark Mode */
+  color: #ffffff;
 }
